@@ -2,91 +2,85 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Will You Be My Valentine?</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
     body {
       margin: 0;
-      padding: 2rem;
-      min-height: 100vh;
+      padding: 20px;
       background: linear-gradient(135deg, #ff9a9e, #fecfef);
       font-family: Arial, sans-serif;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    h1 {
-      font-size: 2.2rem;
-      margin-bottom: 2rem;
       text-align: center;
+      min-height: 100vh;
     }
-
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      margin: 20px 0;
+      color: #333;
+    }
     .buttons {
       position: relative;
-      width: 100%;
-      text-align: center;
-      margin-bottom: 2rem;
+      margin: 30px 0;
     }
-
     button {
-      padding: 0.8rem 2rem;
-      margin: 0 1rem;
-      border-radius: 50px;
+      padding: 12px 30px;
+      margin: 10px;
       border: none;
-      cursor: pointer;
+      border-radius: 50px;
       font-size: 1.1rem;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
     }
-
     #yesButton {
       background: linear-gradient(45deg, #ff4b6e, #ff6b9d);
       color: white;
     }
-
-    #yesButton:hover {
+    #yesButton:hover:not(:disabled) {
       transform: scale(1.05);
     }
-
     #noButton {
       position: absolute;
       background: white;
       color: #ff4b6e;
       border: 3px solid #ff4b6e;
-      top: 0;
       left: 50%;
+      top: 0;
       transform: translateX(-50%);
     }
-
     #message {
-      max-width: 650px;
-      width: 90vw;
-      max-height: 60vh;
-      overflow-y: auto;
-      background: rgba(255, 255, 255, 0.97);
-      padding: 2rem;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       display: none;
-      line-height: 1.7;
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 25px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      line-height: 1.6;
       font-size: 1.05rem;
       text-align: left;
+      max-height: 70vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #ff4b6e rgba(255,255,255,0.5);
     }
-
     #message::-webkit-scrollbar {
-      width: 8px;
+      width: 6px;
     }
     #message::-webkit-scrollbar-track {
-      background: rgba(255,255,255,0.3);
-      border-radius: 4px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 3px;
     }
     #message::-webkit-scrollbar-thumb {
-      background: linear-gradient(#ff4b6e, #ff6b9d);
-      border-radius: 4px;
+      background: #ff4b6e;
+      border-radius: 3px;
+    }
+    @media (max-width: 600px) {
+      #message {
+        margin: 10px;
+        padding: 20px;
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
@@ -101,35 +95,41 @@
   <script>
     const yesBtn = document.getElementById('yesButton');
     const noBtn = document.getElementById('noButton');
-    const msg = document.getElementById('message');
+    const msgDiv = document.getElementById('message');
 
-    function moveNoButton() {
-      const padding = 30;
+    function moveNo() {
       const rect = noBtn.getBoundingClientRect();
-      const maxX = window.innerWidth - rect.width - padding;
-      const maxY = window.innerHeight - rect.height - padding;
-      const x = Math.random() * maxX + padding;
-      const y = Math.random() * maxY + padding;
-      noBtn.style.left = x + 'px';
-      noBtn.style.top = y + 'px';
+      const maxX = window.innerWidth - rect.width - 40;
+      const maxY = window.innerHeight - rect.height - 40;
+      noBtn.style.position = 'fixed';
+      noBtn.style.left = (Math.random() * maxX + 20) + 'px';
+      noBtn.style.top = (Math.random() * maxY + 20) + 'px';
     }
 
-    noBtn.addEventListener('mouseover', moveNoButton);
-    noBtn.addEventListener('click', moveNoButton);
+    noBtn.addEventListener('mouseenter', moveNo);
+    noBtn.addEventListener('click', moveNo);
 
     yesBtn.addEventListener('click', () => {
-      msg.innerHTML = `
-        <p>You just made me the happiest person today. Thank you for saying yes and for being you. I can't wait to make more little moments like this with you. ❤️</p>
+      msgDiv.style.display = 'block';
+      msgDiv.innerHTML = `
+        <p><strong>You just made me the happiest person today. ❤️</strong><br>
+        Thank you for saying yes and for being you. I can't wait to make more little moments like this with you.</p>
+        
         <p>I know this isn't easy — we're both building ourselves right now. I'm not here to pull you away from your dreams; I'm here to walk right beside you with mine too. And if the future still feels unclear, then we stay real today. We talk. We grow. And we let tomorrow arrive when it's ready.</p>
+        
         <p>Because sometimes love isn't about certainty — it's about choosing presence, with open eyes and a steady heart.</p>
+        
         <p>I may not be the most handsome guy you've met or the smartest, but I promise I'll be the boy you can always talk to — the one who will stand by you and love you no matter what happens. I'm still learning how to love you right; sometimes I get it wrong, but I promise I'm always trying. Because you are the one I want to keep getting better for.</p>
+        
         <p>How do I stop myself from admiring you? The way you smile as if the world briefly forgets how loud it can be. If only you knew how often your name finds its way into my conversations, how easily you become a story I tell my friends. They call me crazy. Maybe I am.</p>
+        
         <p>Because how do I tell them you're my first love… and somehow, I fear you'll also be my last?</p>
-        <p>Still, even if you never feel the same, my love for you is yours to keep.</p>
+        
+        <p><em>Still, even if you never feel the same, my love for you is yours to keep.</em></p>
       `;
-      msg.style.display = 'block';
       yesBtn.disabled = true;
       noBtn.style.display = 'none';
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
     });
   </script>
 </body>
